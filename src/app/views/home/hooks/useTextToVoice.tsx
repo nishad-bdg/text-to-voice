@@ -1,5 +1,6 @@
-import { Language } from "@/types"
 import { useEffect, useState } from "react"
+import { Language } from "@/types"
+
 interface Exercise {
   id: number
   prompt: string
@@ -25,18 +26,26 @@ const useTextToVoice = () => {
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0])
   const [isRecording, setIsRecording] = useState(false)
   const [currentExercise, setCurrentExercise] = useState(0)
-  const [exercises, setExercises] = useState<Exercise[]>([])
   const [timeElapsed, setTimeElapsed] = useState(0)
   const [isTimerRunning, setIsTimerRunning] = useState(false)
-
   const [text, setText] = useState("হ্যালো, কেমন আছেন?")
   const [gender, setGender] = useState<"male" | "female">("female")
-
-  const [dataInEnglish, setDataInEnglish] = useState<Exercise[]>(englishPrompts)
+  const [dataInEnglish] = useState<Exercise[]>(englishPrompts)
 
   const handleSpeak = () => {
-    const voiceName =
-      gender === "female" ? "Bangla India Female" : "Bangla India Male"
+    const voices: Record<string, Record<string, string>> = {
+      bn: {
+        male: "Bangla Male",
+        female: "Bangla Female",
+      },
+      en: {
+        male: "US English Male",
+        female: "US English Female",
+      },
+    }
+
+    const langCode = selectedLanguage.code
+    const voiceName = voices[langCode]?.[gender] || "US English Female"
 
     if (typeof window !== "undefined" && (window as any).responsiveVoice) {
       const rv = (window as any).responsiveVoice
@@ -50,62 +59,43 @@ const useTextToVoice = () => {
     }
   }
 
-  
+  useEffect(() => {
+    if (text) handleSpeak()
+  }, [text, selectedLanguage, gender])
 
   useEffect(() => {
-    let interval: NodeJS.Timeout
-    if (isTimerRunning) {
-      interval = setInterval(() => {
-        setTimeElapsed((prev) => prev + 1)
-      }, 1000)
-    }
+    if (!isTimerRunning) return
+    const interval = setInterval(() => setTimeElapsed((prev) => prev + 1), 1000)
     return () => clearInterval(interval)
   }, [isTimerRunning])
 
-  const handleAnswerChange = (value: string, exerciseId: number) => {
-    setExercises((prevExercises) =>
-      prevExercises.map((exercise) =>
-        exercise.id === exerciseId
-          ? { ...exercise, userAnswer: value }
-          : exercise
-      )
-    )
-  }
-
-
-  const toggleRecording = () => {
-    setIsRecording(!isRecording)
-  }
-
+  const toggleRecording = () => setIsRecording((prev) => !prev)
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
-    return `${mins.toString().padStart(2, "0")}:${secs
-      .toString()
-      .padStart(2, "0")}`
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
   }
 
   return {
     selectedLanguage,
     setSelectedLanguage,
+    gender,
+    setGender,
     isRecording,
-    setIsRecording,
+    toggleRecording,
     currentExercise,
     setCurrentExercise,
     timeElapsed,
     setTimeElapsed,
     isTimerRunning,
     setIsTimerRunning,
-    handleAnswerChange,
-    toggleRecording,
     formatTime,
     languages,
-    exercises,
     handleSpeak,
-    dataInEnglish,
+    text,
     setText,
-    text
+    dataInEnglish,
   }
 }
 
