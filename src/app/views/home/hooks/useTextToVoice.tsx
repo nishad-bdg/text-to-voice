@@ -103,7 +103,9 @@ const useTextToVoice = () => {
     languages,
     exercises,
     handleSpeak,
-    dataInEnglish
+    dataInEnglish,
+    setText,
+    text
   }
 }
 

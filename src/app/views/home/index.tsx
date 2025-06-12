@@ -15,10 +15,14 @@ const HomeUI: React.FC = (): JSX.Element => {
     isRecording,
     handleAnswerChange,
     toggleRecording,
-    dataInEnglish, // rename if needed
+    dataInEnglish,
     languages,
+    text,
+    setText,
+    handleSpeak,
   } = useTextToVoice()
 
+  console.info("text", text)
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
@@ -52,7 +56,12 @@ const HomeUI: React.FC = (): JSX.Element => {
                       {exercise.id + 1}
                     </div>
 
-                    <div className="flex-1 space-y-3">
+                    <div
+                      className="flex-1 space-y-3"
+                      onClick={() => {
+                       handleSpeak()
+                      }}
+                    >
                       <p className="text-gray-900 font-medium">
                         {exercise.prompt}
                       </p>
