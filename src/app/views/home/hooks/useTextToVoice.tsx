@@ -13,6 +13,11 @@ const bengaliPrompts: Exercise[] = [
   { id: 1, prompt: "আসসালামু আলাইকুম" },
 ]
 
+interface ResponsiveVoice {
+  speak: (text: string, voice: string, options?: { onend?: () => void }) => void
+  voiceSupport: () => boolean
+}
+
 const useTextToVoice = () => {
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0])
   const [isRecording, setIsRecording] = useState(false)
