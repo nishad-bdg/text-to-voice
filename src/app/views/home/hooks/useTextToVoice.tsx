@@ -3,10 +3,6 @@ import { useEffect, useState } from "react"
 interface Exercise {
   id: number
   prompt: string
-  expectedAnswer: string
-  completed: boolean
-  userAnswer: string
-  isCorrect: boolean | null
 }
 
 const languages: Language[] = [
@@ -14,24 +10,15 @@ const languages: Language[] = [
   { code: "bn", name: "Bengali", flag: "🇧🇩" },
 ]
 
-const exercisePrompts = [
-  { prompt: "Type: Hello, how are you?", answer: "Hello, how are you?" },
-  { prompt: "Type: The quick brown fox", answer: "The quick brown fox" },
-  { prompt: "Type: JavaScript is awesome", answer: "JavaScript is awesome" },
-  {
-    prompt: "Type: Learning languages is fun",
-    answer: "Learning languages is fun",
-  },
-  { prompt: "Type: Practice makes perfect", answer: "Practice makes perfect" },
-  { prompt: "Type: Good morning sunshine", answer: "Good morning sunshine" },
-  {
-    prompt: "Type: Technology improves lives",
-    answer: "Technology improves lives",
-  },
-  {
-    prompt: "Type: Keep learning every day",
-    answer: "Keep learning every day",
-  },
+const englishPrompts: Exercise[] = [
+  { id: 0, prompt: "Type: Hello, how are you?" },
+  { id: 1, prompt: "Type: The quick brown fox" },
+  { id: 2, prompt: "Type: JavaScript is awesome" },
+  { id: 3, prompt: "Type: Learning languages is fun" },
+  { id: 4, prompt: "Type: Practice makes perfect" },
+  { id: 5, prompt: "Type: Good morning sunshine" },
+  { id: 6, prompt: "Type: Technology improves lives" },
+  { id: 7, prompt: "Type: Keep learning every day" },
 ]
 
 const useTextToVoice = () => {
@@ -44,6 +31,8 @@ const useTextToVoice = () => {
 
   const [text, setText] = useState("হ্যালো, কেমন আছেন?")
   const [gender, setGender] = useState<"male" | "female">("female")
+
+  const [dataInEnglish, setDataInEnglish] = useState<Exercise[]>(englishPrompts)
 
   const handleSpeak = () => {
     const voiceName =
@@ -61,18 +50,7 @@ const useTextToVoice = () => {
     }
   }
 
-  useEffect(() => {
-    // Initialize exercises
-    const initialExercises = exercisePrompts.map((item, index) => ({
-      id: index,
-      prompt: item.prompt,
-      expectedAnswer: item.answer,
-      completed: false,
-      userAnswer: "",
-      isCorrect: null,
-    }))
-    setExercises(initialExercises)
-  }, [])
+  
 
   useEffect(() => {
     let interval: NodeJS.Timeout
@@ -94,30 +72,11 @@ const useTextToVoice = () => {
     )
   }
 
-  const checkAnswer = (exerciseId: number) => {
-    const exercise = exercises[exerciseId]
-    const isCorrect =
-      exercise.userAnswer.trim().toLowerCase() ===
-      exercise.expectedAnswer.toLowerCase()
-
-    setExercises((prevExercises) =>
-      prevExercises.map((ex) =>
-        ex.id === exerciseId ? { ...ex, completed: true, isCorrect } : ex
-      )
-    )
-
-    if (!isTimerRunning) {
-      setIsTimerRunning(true)
-    }
-  }
 
   const toggleRecording = () => {
     setIsRecording(!isRecording)
   }
 
-  const completedExercises = exercises.filter((ex) => ex.completed).length
-  const correctAnswers = exercises.filter((ex) => ex.isCorrect === true).length
-  const progressPercentage = (completedExercises / exercises.length) * 100
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
@@ -140,14 +99,11 @@ const useTextToVoice = () => {
     setIsTimerRunning,
     handleAnswerChange,
     toggleRecording,
-    completedExercises,
-    correctAnswers,
-    progressPercentage,
     formatTime,
     languages,
     exercises,
-    checkAnswer,
     handleSpeak,
+    dataInEnglish
   }
 }
 
