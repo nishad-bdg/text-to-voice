@@ -14,7 +14,7 @@ const TextCards: React.FC<TextCardsProps> = ({data, setText}): JSX.Element => {
       <CardHeader>
         <CardTitle className="flex items-center space-x-2">
           <Keyboard className="w-5 h-5 text-indigo-600" />
-          <span>Typing Exercises</span>
+          <span>Examples</span>
         </CardTitle>
       </CardHeader>
       <CardContent>

@@ -36,11 +36,12 @@ const useTextToVoice = () => {
   const [isTimerRunning, setIsTimerRunning] = useState(false)
   const [text, setText] = useState<string | null>(null)
   const [gender, setGender] = useState<"male" | "female">("female")
-  const [exercises,setExercises] = useState<Exercise[]>(englishPrompts)
+  const [exercises, setExercises] = useState<Exercise[]>(englishPrompts)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleSpeak = async () => {
     setIsLoading(true)
+
     try {
       const voices: Record<string, Record<string, string>> = {
         bn: {
@@ -48,16 +49,17 @@ const useTextToVoice = () => {
           female: "Bangla India Female",
         },
         en: {
-          male: "US English Male",
+          male: "UK English Male", // fallback to UK if US Male sounds similar
           female: "US English Female",
         },
       }
-    
-      const langCode = selectedLanguage.code
+
+      const langCode = selectedLanguage.code // "bn" or "en"
       const voiceName = voices[langCode]?.[gender] || "US English Female"
-    
+
       if (typeof window !== "undefined" && (window as any).responsiveVoice) {
         const rv = (window as any).responsiveVoice
+
         if (rv.voiceSupport()) {
           await new Promise<void>((resolve) => {
             rv.speak(text, voiceName, {
@@ -70,14 +72,13 @@ const useTextToVoice = () => {
       } else {
         alert("Voice engine not loaded.")
       }
-    } catch(error) {
-      console.error(error)
-      alert('Something is wrong')
+    } catch (error) {
+      console.error("Speech error:", error)
+      alert("Something went wrong while speaking.")
     } finally {
       setIsLoading(false)
     }
   }
-  
 
   useEffect(() => {
     if (text) handleSpeak()
@@ -90,12 +91,12 @@ const useTextToVoice = () => {
   }, [isTimerRunning])
 
   useEffect(() => {
-    if(selectedLanguage.code === 'bn') {
+    if (selectedLanguage.code === "bn") {
       setExercises(bengaliPrompts)
     } else {
       setExercises(englishPrompts)
     }
-  },[selectedLanguage])
+  }, [selectedLanguage])
 
   const toggleRecording = () => setIsRecording((prev) => !prev)
 
@@ -126,7 +127,7 @@ const useTextToVoice = () => {
     text,
     setText,
     exercises,
-    isLoading
+    isLoading,
   }
 }
 

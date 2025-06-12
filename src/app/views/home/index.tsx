@@ -1,10 +1,11 @@
 "use client"
 import useTextToVoice from "./hooks/useTextToVoice"
-import LanguageCard from "@/app/components/LanguageCard"
 import Recorder from "@/app/components/Recorder"
 import React, { JSX } from "react"
 import TextCards from "@/app/components/TextCards"
-import FloatingLoader from "@/app/components/FloatingLoader"
+import LanguageCard from "@/app/components/LanguageCard"
+import RadioBoxSelector from "@/app/components/RadioBoxSelector"
+// import FloatingLoader from "@/app/components/FloatingLoader"
 
 const HomeUI: React.FC = (): JSX.Element => {
   const {
@@ -15,6 +16,8 @@ const HomeUI: React.FC = (): JSX.Element => {
     exercises,
     languages,
     setText,
+    gender,
+    setGender,
   } = useTextToVoice()
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
@@ -23,6 +26,16 @@ const HomeUI: React.FC = (): JSX.Element => {
           languages={languages}
           selectedLanguage={selectedLanguage}
           setSelectedLanguage={setSelectedLanguage}
+        />
+        <RadioBoxSelector
+          label="Select Gender"
+          name="gender"
+          value={gender}
+          onChange={setGender}
+          options={[
+            { label: "Male", value: "male" },
+            { label: "Female", value: "female" },
+          ]}
         />
         <Recorder isRecording={isRecording} toggleRecording={toggleRecording} />
         <TextCards data={exercises} setText={setText} />
