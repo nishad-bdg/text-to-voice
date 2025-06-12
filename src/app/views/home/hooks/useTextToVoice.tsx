@@ -42,8 +42,9 @@ const useTextToVoice = () => {
 
       const langCode = selectedLanguage.code
       const voiceName = voices[langCode]?.[gender] || "US English Female"
-
+      /* eslint-disable @typescript-eslint/no-explicit-any */
       if (typeof window !== "undefined" && (window as any).responsiveVoice) {
+        /* eslint-disable @typescript-eslint/no-explicit-any */
         const rv = (window as any).responsiveVoice
 
         if (rv.voiceSupport()) {

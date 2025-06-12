@@ -20,7 +20,6 @@ const HomeUI: React.FC = (): JSX.Element => {
     setText,
     gender,
     setGender,
-    text,
     setCustomText,
     customText,
     handleAddData,
