@@ -22,6 +22,7 @@ import {
 import useTextToVoice from "./hooks/useTextToVoice"
 import LanguageOptions from "@/app/components/LanguageCard"
 import LanguageCard from "@/app/components/LanguageCard"
+import Recorder from "@/app/components/Recorder"
 
 export default function Home() {
   const {
@@ -50,38 +51,7 @@ export default function Home() {
         />
 
         {/* Recording Controls */}
-        <Card className="border-0 shadow-lg bg-white/60 backdrop-blur-sm">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center space-x-2">
-              <Mic className="w-5 h-5 text-indigo-600" />
-              <span>Record</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-center">
-              <Button
-                onClick={toggleRecording}
-                size="lg"
-                className={`w-16 h-16 rounded-full transition-all duration-300 ${
-                  isRecording
-                    ? "bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-200 animate-pulse"
-                    : "bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-200"
-                }`}
-              >
-                {isRecording ? (
-                  <MicOff className="w-6 h-6" />
-                ) : (
-                  <Mic className="w-6 h-6" />
-                )}
-              </Button>
-            </div>
-            <p className="text-center text-sm text-gray-600 mt-3">
-              {isRecording
-                ? "Recording... Click to stop"
-                : "Click to start recording"}
-            </p>
-          </CardContent>
-        </Card>
+        <Recorder isRecording={isRecording} toggleRecording={toggleRecording} />
 
         {/* Typing Exercises */}
         <Card className="border-0 shadow-lg bg-white/60 backdrop-blur-sm">
