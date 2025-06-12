@@ -38,6 +38,7 @@ const useTextToVoice = () => {
   const [gender, setGender] = useState<"male" | "female">("female")
   const [exercises, setExercises] = useState<Exercise[]>(englishPrompts)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [customText, setCustomText] = useState<string>("")
 
   const handleSpeak = async () => {
     setIsLoading(true)
@@ -108,6 +109,28 @@ const useTextToVoice = () => {
       .padStart(2, "0")}`
   }
 
+  const handleAddData = (text: string): void => {
+    let newData = null
+    if (selectedLanguage?.code === "bn") {
+      newData = [
+        ...bengaliPrompts,
+        {
+          id: bengaliPrompts[bengaliPrompts?.length - 1]?.id + 1,
+          prompt: text,
+        },
+      ]
+    } else {
+      newData = [
+        ...englishPrompts,
+        {
+          id: bengaliPrompts[bengaliPrompts?.length - 1]?.id + 1,
+          prompt: text,
+        },
+      ]
+    }
+    setExercises(newData)
+  }
+
   return {
     selectedLanguage,
     setSelectedLanguage,
@@ -128,6 +151,9 @@ const useTextToVoice = () => {
     setText,
     exercises,
     isLoading,
+    customText,
+    setCustomText,
+    handleAddData,
   }
 }
 
