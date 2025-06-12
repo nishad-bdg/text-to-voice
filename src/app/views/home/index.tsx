@@ -1,23 +1,13 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
 import {
-  Mic,
-  MicOff,
-  Play,
-  Pause,
   Check,
   X,
-  Globe,
   Keyboard,
   Trophy,
-  Clock,
-  Target,
 } from "lucide-react"
 import useTextToVoice from "./hooks/useTextToVoice"
 import LanguageOptions from "@/app/components/LanguageCard"
@@ -165,7 +155,6 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* Completion Message */}
         {completedExercises === exercises.length && (
           <Card className="border-0 shadow-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white">
             <CardContent className="p-6 text-center">
